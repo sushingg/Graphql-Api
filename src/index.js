@@ -27,9 +27,9 @@ let RootQuery = new GraphQLObjectType({
   name: 'Query',
   description: 'Realize Root Query',
   fields: () => ({
+	user: userQueries.user,
     users: userQueries.users,
     userId: userQueries.userId,
-    userByName: userQueries.userByName
   })
 })
 

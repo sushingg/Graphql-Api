@@ -12,26 +12,41 @@ import userType from './userType'
 import user from './userSchema'
 
 export default {
-  users: {
-    type: new GraphQLList(userType),
-    resolve: user.getListOfUsers
-  },
-  userId: {
-    type: userType,
-    args: {
-      id: {
-        type: GraphQLID
-      }
+    users: {
+        type: new GraphQLList(userType),
+        resolve: user.getListOfUsers
     },
-    resolve: user.getUserById
-  },
-  userByName: {
-    type: userType,
-    args: {
-      name: {
-        type: GraphQLString
-      }
+    user: {
+        type: userType,
+        args: {
+            firstName: {
+                type: GraphQLString
+            },
+            lastName: {
+                type: GraphQLString
+            },
+            email: {
+                type: GraphQLString
+            },
+        },
+        resolve: user.getUser
     },
-    resolve: user.getUserByName
-  }
+    userId: {
+        type: userType,
+        args: {
+            id: {
+                type: GraphQLID
+            }
+        },
+        resolve: user.getUserById
+    },
+    userByName: {
+        type: userType,
+        args: {
+            name: {
+                type: GraphQLString
+            }
+        },
+        resolve: user.getUserByName
+    }
 };

@@ -68,19 +68,32 @@ async function getListOfUsers() {
 }
 
 async function getUserById(root, {id}) {
-    const res = user.findOne({id: id}).exec();
+	var valid = mongoose.Types.ObjectId.isValid(id);
+	await console.log(valid)
+    const res = user.findById(id).exec();
+	await console.log(await res)
     if (!res) {
         throw new Error('Error')
     }
     return await res
 }
+async function getUser(root, params) {
+	await console.log(params)
+    const res = user.findOne(params).exec();
+	await console.log(await res)
+    if (await !res) {
+        throw new Error('Error')
+    }
+    return await res
+}
+/*
 async function getUserByName(root, {name}) {
     const res = user.findOne({name: name}).exec();
     if (!res) {
         throw new Error('Error')
     }
     return await res
-}
+}*/
 async function addUser(root, {
     firstName, lastName, email, password, address1, address2, country, state, postcode, phone, admin
 }) {
@@ -137,7 +150,7 @@ async function updateUser(root, {
     }
 }
 module.exports = {
-    user, auth, getListOfUsers,getUserById,getUserByName,addUser,updateUser,
+    user, auth, getListOfUsers,getUserById,addUser,updateUser,getUser,
 }
 /*
 module.exports.getListOfUsers = () => {
