@@ -1,13 +1,6 @@
 # GraphQL + Express + MongoDB
 
-> A small project to illustrate using GraphQL with MongoDB in Express as simply as possible
-
-#### Project Goals:
-* Create a GraphQL + MongoDB + Express project that is as __simple as possible__
-* __GraphiQL Integration__ to send Queries / Mutations
-* Ability to use __Postman or other REST Client__ to POST GraphQL Queries / Mutations
-* Use of __ES6__ (but minimally)
-* Full Create, Update and Query from GraphQL to MongoDB
+> A small project using GraphQL with MongoDB in Express
 
 ## Installation
 
@@ -56,52 +49,8 @@ npm start
 ```
 npm prestart will run first, transpile the ES6 code and save to _dist_ folder. npm start will then run the code directly from the _dist_ folder
 
-![CLI Commands](https://raw.githubusercontent.com/applification/graphql-express-mongodb/master/readme/runtheapp.gif)
-
 ## Running GraphQL Mutations & Queries
 You can run these queries / mutations within GraphiQL, alternatively you can run them within a tool such as Postman. To do so ensure you POST the query / mutation in the body and set the content-type to GraphQL.
-
-#### Create a user
-```js
-mutation {
-  addUser( name:"Jeff Beck", email:"jeff@beck.net", tel:"0800") {
-    id,
-    name,
-    email,
-    tel
-  }
-}
-```
-
-#### Find a user
-Find the first user in the MongoDB, requesting just the name and email address
-```js
-query {
-  userId(id:"56e0582a07be7df61583d9a4") {
-    name,
-    email
-  }
-}
-```
-#### Show all users
-```js
-query {
-  users {
-    id,
-    name,
-    email
-  }
-}
-```
-
-#### Update a user
-```js
-mutation {
-  updateUser(id:"56e0919c2c4670ed23fe4a28", name:"Jeff The Beck", email:"jeff@beck.net", tel:"0800 234 231") {
-    id
-  }
-}
-```
 
 ## GraphQL Resolvers
 GraphQL doesn't care where your data is stored, in this case it's in a MongoDB.
