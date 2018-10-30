@@ -65,6 +65,9 @@ export default {
     updateUser: {
         type: userType,
         args: {
+			id: {
+                type: new GraphQLNonNull(GraphQLID)
+            },
             firstName: {
                 name: 'firstName',
                 type: GraphQLString

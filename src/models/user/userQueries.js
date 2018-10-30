@@ -39,14 +39,5 @@ export default {
             }
         },
         resolve: user.getUserById
-    },
-    userByName: {
-        type: userType,
-        args: {
-            name: {
-                type: GraphQLString
-            }
-        },
-        resolve: user.getUserByName
     }
 };

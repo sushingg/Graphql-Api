@@ -18,9 +18,11 @@ import graphqlHTTP from 'express-graphql'
 
 // Import GraphQL Queries
 import userQueries from './models/user/userQueries'
+import productQueries from './models/product/productQueries'
 
 // Import GraphQL Mutations
 import userMutations from './models/user/userMutations'
+import productMutations from './models/product/productMutations'
 
 // Setup GraphQL RootQuery
 let RootQuery = new GraphQLObjectType({
@@ -30,6 +32,10 @@ let RootQuery = new GraphQLObjectType({
 	user: userQueries.user,
     users: userQueries.users,
     userId: userQueries.userId,
+	product: productQueries.product,
+    products: productQueries.products,
+    productId: productQueries.productId,
+	
   })
 })
 
@@ -38,9 +44,12 @@ let RootMutation = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Realize Root Mutations',
   fields: () => ({
+	login: userMutations.login,
     addUser: userMutations.addUser,
     updateUser: userMutations.updateUser,
-	login: userMutations.login
+	addProduct: productMutations.addProduct,
+    updateProduct: productMutations.updateProduct,
+	
   })
 })
 
@@ -53,7 +62,8 @@ async function dbconnect(){
 	// Connect MongoDB with Mongoose
 	mongoose.connect('mongodb://dbuser:shin1996@ec2-52-91-20-77.compute-1.amazonaws.com/project-z',{
 	  useCreateIndex: true,
-	  useNewUrlParser: true
+	  useNewUrlParser: true,
+	  useFindAndModify: false
 	})
     await mongoose.connection.on('error', function (err) {
         console.log('Error: Could not connect to MongoDB. Did you forget to run `mongod`?'.red);

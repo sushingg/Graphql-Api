@@ -86,19 +86,9 @@ async function getUser(root, params) {
     }
     return await res
 }
-/*
-async function getUserByName(root, {name}) {
-    const res = user.findOne({name: name}).exec();
-    if (!res) {
-        throw new Error('Error')
-    }
-    return await res
-}*/
 async function addUser(root, {
     firstName, lastName, email, password, address1, address2, country, state, postcode, phone, admin
 }) {
-    // args.password
-	await console.log('1')
 	var newUser = new  user({
         firstName: firstName,
         lastName: lastName,
@@ -112,42 +102,19 @@ async function addUser(root, {
         phone: phone,
 		admin: admin
     });
-	await console.log(newUser)
     const res = await newUser.save()
     if (!res) {
         throw new Error('Error55')
     }
     return await res
 }
-async function updateUser(root, {
-    id, firstName, lastName, email, address1, address2, country, state, postcode, phone, admin
-}) {
-    // args.password
-	var updateUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        address1: address1,
-        address2: address2,
-        country: country,
-        state: state,
-        postcode: postcode,
-        phone: phone,
-        admin: Boolean
-    };
-    const res = await user.findOneAndUpdate({
-            id: id
-        }, {
-            $set: updateUser
-        }, {
-            returnNewDocument: true
-        }).exec();
+async function updateUser(root,params) {
+    const res = await user.findByIdAndUpdate(params.id,{$set:params},{ new: true }).exec();
     if (!res) {
         throw new Error('Error')
     }
-    return await {
-        res
-    }
+    return await res
+
 }
 module.exports = {
     user, auth, getListOfUsers,getUserById,addUser,updateUser,getUser,
