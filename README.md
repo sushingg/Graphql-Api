@@ -28,6 +28,10 @@ The following NPM modules are required in package.json:
 * babel-cli
 * babel-preset-es2015
 * nodemon
+* jsonwebtoken
+* graphql-iso-date
+* cors
+* bcrypt
 
 Install with:
 
