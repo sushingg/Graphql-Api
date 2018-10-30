@@ -8,8 +8,16 @@
     "prestart": "babel src --out-dir dist",
     "start": " node dist/index.js"
   },
-  "author": "Dave Hudson <dave@applification.net> (http://applification.net)",
-  "license": "ISC",
+  "author": "sushingg",
+  "keywords": [
+    "nodejs",
+    "express",
+    "graphql"
+  ],
+  "engines": {
+    "node": "8.11.x"
+  },
+  "license": "GNU",
   "dependencies": {
     "bcrypt": "^3.0.2",
     "cors": "^2.8.4",
