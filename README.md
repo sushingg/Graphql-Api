@@ -4,8 +4,8 @@
 
 ## Installation
 
-#### ES6 / Node V4+
-This project makes use of ES6 which requires a 4+ version of Node https://nodejs.org/en/download/
+#### ES6 / Node V8+
+This project makes use of ES6 which requires a 8+ version of Node https://nodejs.org/en/download/
 
 #### MongoDB
 In order to run this project you need to install MongoDB and ensure an instance is running.
