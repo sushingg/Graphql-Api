@@ -52,7 +52,8 @@ async function auth(root, {email, password}) {
     const payload = {
         userId: check.id,
         email: check.email,
-        admin: check.admin
+        admin: check.admin,
+		exp: Math.floor(Date.now() / 1000) + (60 * 60),
     };
     const token = jwt.sign(payload, 'secretshin')
     return await {

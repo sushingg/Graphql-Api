@@ -4,6 +4,7 @@ import {
   GraphQLSchema
  } from 'graphql'
 
+import jwt from 'jsonwebtoken';
 // Import express server
 import express from 'express'
 
@@ -82,7 +83,26 @@ async function dbconnect(){
 	await console.dir(status, {depth: null, colors: true })
 }
 dbconnect();
+async function test(){
+	var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmQ3NjRhYTcwMzgzMDA2ZDQxMTA5Y2QiLCJlbWFpbCI6InNoaW5Ac2hpbi5jaCIsImFkbWluIjp0cnVlLCJleHAiOjE1NDA5MjYxODksImlhdCI6MTU0MDkyMjU4OX0.P2WasZ5QF_3C3rfHkJEwqCSsaDifb-kw-F0R9A-roeI"
 
+	var decoded = await jwt.verify(token, 'secretshin', function(err, decoded) {
+		if(!err) return decoded
+	});
+	if (decoded){
+		console.log(await decoded) // bar
+		var current_time = new Date().getTime() / 1000;
+		console.log(current_time)
+		if (current_time > decoded.exp) {
+		  console.log("Expired!")
+		}else{
+			console.log("Not Expired!")
+		}
+	}
+	
+	
+}
+//test()
 
 // Set up Express and integrate with our GraphQL Schema and configure to use graphiql
 var app = express()
