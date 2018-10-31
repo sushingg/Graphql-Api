@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import {authCheck} from './../utils'
 var productSchema = new mongoose.Schema({
     productSlug: String,
     productTitle: String,
@@ -16,7 +17,6 @@ var productSchema = new mongoose.Schema({
     productImage: String
 });
 let product = mongoose.model('product', productSchema);
-
 async function getListOfProducts() {
     const res = product.find({}).exec();
     if (!res) {
@@ -24,7 +24,6 @@ async function getListOfProducts() {
     }
     return await res
 }
-
 async function getProductById(root, {id}) {
 	var valid = mongoose.Types.ObjectId.isValid(id);
 	await console.log(valid)

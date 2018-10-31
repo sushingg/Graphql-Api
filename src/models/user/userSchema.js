@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'; 
+import {authCheck} from './../utils'
 var userSchema = new mongoose.Schema({
         firstName: String,
         lastName: String,
@@ -21,9 +22,6 @@ var userSchema = new mongoose.Schema({
 			default: false
 		}
 });
-var date = new Date();
-//date.toISOString(); //"2011-12-19T15:28:46.493Z"
-
 let user = mongoose.model('user', userSchema);
 async function hashPassword (password) {
   const saltRounds = 10;
@@ -35,12 +33,6 @@ async function hashPassword (password) {
     });
   })
   return hashedPassword
-}
-async function authCheck (decoded) {
-	if (decoded.error){
-		throw new Error(decoded.message)
-	}
-  return await true
 }
 async function auth(root, {email, password}) {
     // args.password
@@ -72,7 +64,6 @@ async function getListOfUsers() {
     }
     return await res
 }
-
 async function getUserById(root, {id}) {
 	var valid = mongoose.Types.ObjectId.isValid(id);
 	await console.log(valid)
