@@ -34,8 +34,13 @@ async function hashPassword (password) {
       resolve(hash)
     });
   })
-
   return hashedPassword
+}
+async function authCheck (decoded) {
+	if (decoded.error){
+		throw new Error(decoded.message)
+	}
+  return await true
 }
 async function auth(root, {email, password}) {
     // args.password
@@ -90,6 +95,7 @@ async function getUser(root, params) {
 async function addUser(root, {
     firstName, lastName, email, password, address1, address2, country, state, postcode, phone, admin
 }) {
+	await authCheck(root.decoded)
 	var newUser = new  user({
         firstName: firstName,
         lastName: lastName,
@@ -110,6 +116,7 @@ async function addUser(root, {
     return await res
 }
 async function updateUser(root,params) {
+	await authCheck(root.decoded)
     const res = await user.findByIdAndUpdate(params.id,{$set:params},{ new: true }).exec();
     if (!res) {
         throw new Error('Error')
@@ -120,94 +127,3 @@ async function updateUser(root,params) {
 module.exports = {
     user, auth, getListOfUsers,getUserById,addUser,updateUser,getUser,
 }
-/*
-module.exports.getListOfUsers = () => {
-  return new Promise((resolve, reject) => {
-    user.find({}).exec((err, res) => {
-      err ? reject(err) : resolve(res);
-    });
-  });
-};
-module.exports.getUserById = (root, {
-    id
-}) = > {
-    return new Promise((resolve, reject) = > {
-        user.findOne({
-            id: id
-        }).exec((err, res) = > {
-            err ? reject(err) : resolve(res);
-        });
-    });
-};
-module.exports.getUserByName = (root, {
-    name
-}) = > {
-    return new Promise((resolve, reject) = > {
-        user.findOne({
-            name: name
-        }).exec((err, res) = > {
-            err ? reject(err) : resolve(res);
-        });
-    });
-};
-module.exports.getUserByPosition = (root, {
-    id
-}) = > {
-    return new Promise((resolve, reject) = > {
-        user.find({}).exec((err, res) = > {
-            err ? reject(err) : resolve(res[id]);
-        });
-    });
-};
-module.exports.addUser = (root, {
-    firstName, lastName, email, password, address1, address2, country, state, postcode, phone, created, admin
-}) = > {
-    var newUser = new user({
-        firstName: String,
-        lastName: String,
-        email: String,
-		password: String,
-        address1: String,
-        address2: String,
-        country: String,
-        state: String,
-        postcode: String,
-        phone: String,
-        created: Date,
-        admin: Boolean
-    });
-    return new Promise((resolve, reject) = > {
-        newUser.save((err, res) = > {
-            err ? reject(err) : resolve(res);
-        });
-    });
-}
-module.exports.updateUser = (root, {
-    id, firstName, lastName, email, password, address1, address2, country, state, postcode, phone, created, admin
-}) = > {
-    var updateUser = {
-        firstName: String,
-        lastName: String,
-        email: String,
-		password: String,
-        address1: String,
-        address2: String,
-        country: String,
-        state: String,
-        postcode: String,
-        phone: String,
-        created: Date,
-        admin: Boolean
-    };
-    return new Promise((resolve, reject) = > {
-        user.findOneAndUpdate({
-            id: id
-        }, {
-            $set: updateUser
-        }, {
-            returnNewDocument: true
-        }).exec((err, res) = > {
-            err ? reject(err) : resolve(res);
-        });
-    });
-}*/

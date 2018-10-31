@@ -25,6 +25,8 @@ import productQueries from './models/product/productQueries'
 import userMutations from './models/user/userMutations'
 import productMutations from './models/product/productMutations'
 
+// Set up Express and integrate with our GraphQL Schema and configure to use graphiql
+var app = express()
 // Setup GraphQL RootQuery
 let RootQuery = new GraphQLObjectType({
   name: 'Query',
@@ -61,7 +63,7 @@ let schema = new GraphQLSchema({
 })
 async function dbconnect(){
 	// Connect MongoDB with Mongoose
-	mongoose.connect('mongodb://dbuser:shin1996@ec2-52-91-20-77.compute-1.amazonaws.com/project-z',{
+	mongoose.connect(process.env.DB,{
 	  useCreateIndex: true,
 	  useNewUrlParser: true,
 	  useFindAndModify: false
@@ -74,10 +76,10 @@ async function dbconnect(){
 	var status = {
 	  Express: {
 		"Online": true,
-		"Port": 3000
+		"Port": 4000
 	  },
 	  "GraphiQL": {
-		"url": "http://localhost:3000/graphql"
+		"url": "http://localhost:4000/graphql"
 	  }
 	}
 	await console.dir(status, {depth: null, colors: true })
@@ -86,7 +88,7 @@ dbconnect();
 async function test(){
 	var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmQ3NjRhYTcwMzgzMDA2ZDQxMTA5Y2QiLCJlbWFpbCI6InNoaW5Ac2hpbi5jaCIsImFkbWluIjp0cnVlLCJleHAiOjE1NDA5MjYxODksImlhdCI6MTU0MDkyMjU4OX0.P2WasZ5QF_3C3rfHkJEwqCSsaDifb-kw-F0R9A-roeI"
 
-	var decoded = await jwt.verify(token, 'secretshin', function(err, decoded) {
+	var decoded = await jwt.verify(token,process.env.SECRET, function(err, decoded) {
 		if(!err) return decoded
 	});
 	if (decoded){
@@ -102,15 +104,52 @@ async function test(){
 	
 	
 }
-//test()
+test()
+var apiToken = express.Router(); 
+// route middleware to verify a token
+apiToken.get('/', function(req, res) {
+  return res.status(403).send({ 
+        success: false, 
+        message: 'welcome to my graphql api yay' 
+    });
+});
+apiToken.use(function(req, res, next) {
+  //console.log(req.headers['x-access-token'])
+  // check header or url parameters or post parameters for token
+  var token = req.headers['x-access-token'];
 
+  // decode token
+  if (token) {
+
+    // verifies secret and checks exp
+    jwt.verify(token,process.env.SECRET, function(err, decoded) {      
+      if (err) {
+        req.decoded = {error: true, message: 'Failed to authenticate token.'}   
+		console.log({error: true, message: 'Failed to authenticate token.'} );
+		next();
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        var admin = decoded.admin;
+        var id = decoded.id;
+        console.log(req.originalUrl,' id:',id,' admin:',admin);
+        next();
+      }
+    });
+
+  } else {
+	req.decoded = {error: true, message: 'No token provided.'}
+	console.log({error: true, message: 'No token provided.'});
+	next();
+  }
+});
+app.use('/', apiToken);
 // Set up Express and integrate with our GraphQL Schema and configure to use graphiql
-var app = express()
 app.get('/', function(req, res) {
   return res.status(404)        // HTTP status 404: NotFound
    .send('Not found');
 });
-app.use('/graphql', cors(), graphqlHTTP({ schema: schema, graphiql: true }))
+apiToken.use('/graphql', cors(),graphqlHTTP(request => ({schema: schema, rootValue: request, graphiql: true,}))  )
 app.listen('4000')
 
 

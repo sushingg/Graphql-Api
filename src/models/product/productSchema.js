@@ -48,7 +48,7 @@ async function addProduct(root, {
     productSlug, productTitle, productPrice, productDescription, productPublished, productTags, productOptions, productAddedDate, productImage
 }) {
     // args.password
-	await console.log('1')
+	await authCheck(root.decoded)
 	var newProduct = new  product({
 		productSlug: productSlug,
 		productTitle: productTitle,
@@ -68,6 +68,7 @@ async function addProduct(root, {
     return await res
 }
 async function updateProduct(root,params) {
+	await authCheck(root.decoded)
     const res = await product.findByIdAndUpdate(params.id,{$set:params},{ new: true }).exec();
     if (!res) {
         throw new Error('Error')
