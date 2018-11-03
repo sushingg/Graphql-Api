@@ -156,6 +156,6 @@ app.get('/', function(req, res) {
    .send('Not found');
 });
 apiToken.use('/graphql', cors(),graphqlHTTP(request => ({schema: schema, rootValue: request, graphiql: true,}))  )
-app.listen('4000')
+app.listen(process.env.PORT||4000)
 
 
