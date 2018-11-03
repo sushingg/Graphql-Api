@@ -10,11 +10,12 @@ import {
   } from 'graphql';
 import {GraphQLDateTime} from 'graphql-iso-date';
 import userType from './userType';
+import regisType from './regisType';
 import user from './userSchema';
 import authType from './authType';
 export default {
     addUser: {
-        type: userType,
+        type: regisType,
         args: {
             firstName: {
                 name: 'firstName',

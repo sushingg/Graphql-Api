@@ -8,6 +8,8 @@ import jwt from 'jsonwebtoken';
 // Import express server
 import express from 'express'
 
+// importmorgan to get logs
+import morgan from 'morgan'
 // Import cors 
 import cors from 'cors'
 
@@ -25,8 +27,12 @@ import productQueries from './models/product/productQueries'
 import userMutations from './models/user/userMutations'
 import productMutations from './models/product/productMutations'
 
+
+
 // Set up Express and integrate with our GraphQL Schema and configure to use graphiql
 var app = express()
+//use morgan middleware
+app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :res[hesder]'))
 // Setup GraphQL RootQuery
 let RootQuery = new GraphQLObjectType({
   name: 'Query',
@@ -86,7 +92,7 @@ async function dbconnect(){
 }
 dbconnect();
 async function test(){
-	var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmQ3NjRhYTcwMzgzMDA2ZDQxMTA5Y2QiLCJlbWFpbCI6InNoaW5Ac2hpbi5jaCIsImFkbWluIjp0cnVlLCJleHAiOjE1NDA5MjYxODksImlhdCI6MTU0MDkyMjU4OX0.P2WasZ5QF_3C3rfHkJEwqCSsaDifb-kw-F0R9A-roeI"
+	var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmQ3NjRhYTcwMzgzMDA2ZDQxMTA5Y2QiLCJlbWFpbCI6InNoaW5Ac2hpbi5jaCIsImFkbWluIjp0cnVlLCJleHAiOjE1NDk5MjYxODksImlhdCI6MTU0MDkyMjU4OX0.Up-ku3Hnf6YVoGc2xumP-ax88yBgm6yLN0YGRFwk9uI"
 
 	var decoded = await jwt.verify(token,process.env.SECRET, function(err, decoded) {
 		if(!err) return decoded
@@ -104,7 +110,7 @@ async function test(){
 	
 	
 }
-test()
+//test()
 var apiToken = express.Router(); 
 // route middleware to verify a token
 apiToken.get('/', function(req, res) {
@@ -125,7 +131,7 @@ apiToken.use(function(req, res, next) {
     jwt.verify(token,process.env.SECRET, function(err, decoded) {      
       if (err) {
         req.decoded = {error: true, message: 'Failed to authenticate token.'}   
-		console.log({error: true, message: 'Failed to authenticate token.'} );
+		//console.log({error: true, message: 'Failed to authenticate token.'} );
 		next();
       } else {
         // if everything is good, save to request for use in other routes
@@ -139,7 +145,7 @@ apiToken.use(function(req, res, next) {
 
   } else {
 	req.decoded = {error: true, message: 'No token provided.'}
-	console.log({error: true, message: 'No token provided.'});
+	//console.log({error: true, message: 'No token provided.'});
 	next();
   }
 });

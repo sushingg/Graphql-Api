@@ -86,7 +86,7 @@ async function getUser(root, params) {
 async function addUser(root, {
     firstName, lastName, email, password, address1, address2, country, state, postcode, phone, admin
 }) {
-	await authCheck(root.decoded)
+	
 	var newUser = new  user({
         firstName: firstName,
         lastName: lastName,
@@ -104,6 +104,14 @@ async function addUser(root, {
     if (!res) {
         throw new Error('Error55')
     }
+	const payload = {
+        userId: res.id,
+        email: res.email,
+        admin: res.admin,
+		exp: Math.floor(Date.now() / 1000) + (60 * 60),
+    };
+    const token = jwt.sign(payload, 'secretshin')
+	res.token = token
     return await res
 }
 async function updateUser(root,params) {
