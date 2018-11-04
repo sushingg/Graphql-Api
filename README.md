@@ -1,7 +1,5 @@
-
-[![GitHub license](https://img.shields.io/github/license/sushingg/Graphql-Api.svg)](https://github.com/sushingg/Graphql-Api/blob/master/LICENSE)
-
 # GraphQL + Express + MongoDB
+[![GitHub license](https://img.shields.io/github/license/sushingg/Graphql-Api.svg)](https://github.com/sushingg/Graphql-Api/blob/master/LICENSE)
 
 > A small project using GraphQL with MongoDB in Express
 
