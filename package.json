@@ -15,8 +15,7 @@
     "graphql"
   ],
   "engines": {
-    "node": "8.11.x",
-    "yarn": "1.12.x"
+    "node": "8.11.x"
   },
   "license": "GNU",
   "dependencies": {
