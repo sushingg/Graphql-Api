@@ -37,7 +37,7 @@ async function hashPassword (password) {
 async function auth(root, {email, password}) {
     // args.password
     const check = await user.findOne({
-        email: email
+        email: email.toLowerCase()
     }).exec()
     if (!check) {
         throw new Error('No such user found')
@@ -90,7 +90,7 @@ async function addUser(root, {
 	var newUser = new  user({
         firstName: firstName,
         lastName: lastName,
-        email: email,
+        email: email.toLowerCase(),
 		password: await hashPassword(password),
         address1: address1,
         address2: address2,

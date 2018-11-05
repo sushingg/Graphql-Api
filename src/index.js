@@ -137,8 +137,8 @@ apiToken.use(function(req, res, next) {
         // if everything is good, save to request for use in other routes
         req.decoded = decoded;
         var admin = decoded.admin;
-        var id = decoded.id;
-        console.log(req.originalUrl,' id:',id,' admin:',admin);
+        var email = decoded.email;
+        console.log(req.originalUrl,' email:',email,' admin:',admin);
         next();
       }
     });
