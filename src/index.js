@@ -22,10 +22,12 @@ import graphqlHTTP from 'express-graphql'
 // Import GraphQL Queries
 import userQueries from './models/user/userQueries'
 import productQueries from './models/product/productQueries'
+import orderQueries from './models/order/orderQueries'
 
 // Import GraphQL Mutations
 import userMutations from './models/user/userMutations'
 import productMutations from './models/product/productMutations'
+import orderMutations from './models/order/orderMutations'
 
 
 
@@ -44,6 +46,9 @@ let RootQuery = new GraphQLObjectType({
 	product: productQueries.product,
     products: productQueries.products,
     productId: productQueries.productId,
+	order: orderQueries.order,
+    orders: orderQueries.orders,
+    orderId: orderQueries.orderId,
 	
   })
 })
@@ -58,6 +63,8 @@ let RootMutation = new GraphQLObjectType({
     updateUser: userMutations.updateUser,
 	addProduct: productMutations.addProduct,
     updateProduct: productMutations.updateProduct,
+	addOrder: orderMutations.addOrder,
+    updateOrder: orderMutations.updateOrder,
 	
   })
 })
