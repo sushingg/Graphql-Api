@@ -19,6 +19,7 @@ import mongoose from 'mongoose'
 // Import express-graphql an easy express integration of https://github.com/graphql/graphiql
 import graphqlHTTP from 'express-graphql'
 
+import bodyParser from 'body-parser'
 // Import GraphQL Queries
 import userQueries from './models/user/userQueries'
 import productQueries from './models/product/productQueries'
@@ -29,10 +30,20 @@ import userMutations from './models/user/userMutations'
 import productMutations from './models/product/productMutations'
 import orderMutations from './models/order/orderMutations'
 
+import hookApi from './hook/hook'
 
+var omise = require('omise')({
+  'publicKey': process.env.OMISE_PUBLIC_KEY,
+  'secretKey': process.env.OMISE_SECRET_KEY,
+  'omiseVersion': '2017-11-02'
+});
 
 // Set up Express and integrate with our GraphQL Schema and configure to use graphiql
 var app = express()
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 //use morgan middleware
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :res[hesder]'))
 // Setup GraphQL RootQuery
@@ -81,11 +92,11 @@ async function dbconnect(){
 	  useNewUrlParser: true,
 	  useFindAndModify: false
 	})
-    await mongoose.connection.on('error', function (err) {
-        console.log('Error: Could not connect to MongoDB. Did you forget to run `mongod`?'.red);
-    }).on('open', function () {
-        console.log('Connection extablised with MongoDB')
-    })
+  await mongoose.connection.on('error', function (err) {
+      console.log('Error: Could not connect to MongoDB. Did you forget to run `mongod`?'.red);
+  }).on('open', function () {
+      console.log('Connection extablised with MongoDB')
+  })
 	var status = {
 	  Express: {
 		"Online": true,
@@ -97,7 +108,9 @@ async function dbconnect(){
 	}
 	await console.dir(status, {depth: null, colors: true })
 }
+
 dbconnect();
+
 async function test(){
 	var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1YmQ3NjRhYTcwMzgzMDA2ZDQxMTA5Y2QiLCJlbWFpbCI6InNoaW5Ac2hpbi5jaCIsImFkbWluIjp0cnVlLCJleHAiOjE1NDk5MjYxODksImlhdCI6MTU0MDkyMjU4OX0.Up-ku3Hnf6YVoGc2xumP-ax88yBgm6yLN0YGRFwk9uI"
 
@@ -119,12 +132,51 @@ async function test(){
 }
 //test()
 var apiToken = express.Router(); 
+
 // route middleware to verify a token
 apiToken.get('/', function(req, res) {
   return res.status(403).send({ 
         success: false, 
         message: 'welcome to my graphql api yay' 
     });
+  });
+apiToken.post('/hook', function(req, res) {
+  //console.log(req.body)
+  hookApi(req.body)
+  return res.status(200).send('ok');
+  });
+
+apiToken.get('/charge/:amount', function(req, res) {
+  //var temp = makeCharge(req.params.amount)
+  var amount = req.params.amount*100;
+    console.log(amount)
+    var currency = 'thb';
+    var source = {
+        'type':     'internet_banking_bbl',
+        'amount':   amount,
+        'currency': currency,
+    };
+      
+    omise.sources.create(source).then(function(resSource) {
+      return omise.charges.create({
+        'amount':     amount,
+        'source':     resSource.id,
+        'currency':   currency,
+        'return_uri': 'https://omise.co',
+        'metadata' :{'order_id' : 'testid'}
+    });
+    }).then(function(charge) {
+      return res.status(201).send(
+        charge
+     )
+     
+    }).catch(function(err) {
+      console.log(err);
+      return res.status(403).send({
+        message: err
+      })
+    });
+    
 });
 apiToken.use(function(req, res, next) {
   //console.log(req.headers['x-access-token'])

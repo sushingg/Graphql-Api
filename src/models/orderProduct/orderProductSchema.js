@@ -20,9 +20,11 @@ var orderSchema = new mongoose.Schema({
 			type: Date,
 			default: Date.now
 		},
-	orderProducts: String
+	orderProducts: String,
+	orderPaymentLink: String
 });
 let order = mongoose.model('order', orderSchema);
+
 async function getListOfOrder() {
     const res = order.find({}).exec();
     if (!res) {
@@ -50,12 +52,13 @@ async function getOrder(root, params) {
     return await res
 }
 async function addOrder(root, {
-    orderPaymentId, orderTotal, orderEmail, orderFirstname, orderLastname, orderAddr1, orderAddr2, orderCountry, orderState, orderPostcode, orderPhoneNumber, orderComment, orderStatus, orderDate
+    orderPaymentId, orderTotal, orderEmail, orderFirstname, orderLastname, orderAddr1, orderAddr2, orderCountry, orderState, orderPostcode, orderPhoneNumber, orderComment, orderStatus, orderDate, orderProducts
 }) {
     // args.password
 	await authCheck(root.decoded)
+	var charge = await makeCharge(orderTotal)
 	var newOrder = new  order({
-		orderPaymentId: orderPaymentId,
+		orderPaymentId: charge.id,
 		orderTotal: orderTotal,
 		orderEmail: orderEmail,
 		orderFirstname: orderFirstname,
@@ -69,7 +72,8 @@ async function addOrder(root, {
 		orderComment: orderComment,
 		orderStatus: orderStatus,
 		orderDate: orderDate,
-		orderProducts: orderProducts
+		orderProducts: orderProducts,
+		orderPaymentLink: charge.authorize_uri
     });
 	await console.log(newOrder)
     const res = await newOrder.save()
@@ -77,6 +81,29 @@ async function addOrder(root, {
         throw new Error('Error55')
     }
     return await res
+}
+const makeCharge = (amount) => {
+	var amount = amount*100;
+    console.log(amount)
+    var currency = 'thb';
+    var source = {
+        'type':     'internet_banking_bbl',
+        'amount':   amount,
+        'currency': currency,
+    };
+    omise.sources.create(source).then(function(resSource) {
+      return omise.charges.create({
+        'amount':     amount,
+        'source':     resSource.id,
+        'currency':   currency,
+        'return_uri': 'https://omise.co'
+    });
+    }).then(function(charge) {
+      return charge
+    }).catch(function(err) {
+      console.log(err);
+      return  err
+    });
 }
 async function updateOrder(root,params) {
 	await authCheck(root.decoded)

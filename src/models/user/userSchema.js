@@ -50,6 +50,8 @@ async function auth(root, {email, password}) {
         userId: check.id,
         email: check.email,
         admin: check.admin,
+        fname: check.firstName,
+        lname: check.lastName,
 		exp: Math.floor(Date.now() / 1000) + (60 * 60),
     };
     const token = jwt.sign(payload, 'secretshin')

@@ -61,7 +61,10 @@ export default new GraphQLObjectType({
 			type: GraphQLDateTime
 		},
 		orderProducts: {
-			type: orderProductType
+			type: new GraphQLList(orderProductType)
+		},
+		orderPaymentLink: {
+			type: GraphQLString
 		}
     })
 });

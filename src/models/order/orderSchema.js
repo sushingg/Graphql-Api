@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import {authCheck} from './../utils'
+var omise = require('omise')({
+  'publicKey': process.env.OMISE_PUBLIC_KEY,
+  'secretKey': process.env.OMISE_SECRET_KEY,
+  'omiseVersion': '2017-11-02'
+});
 var orderSchema = new mongoose.Schema({
 	orderPaymentId: String,
 	orderTotal: Number,
@@ -20,14 +25,15 @@ var orderSchema = new mongoose.Schema({
 			type: Date,
 			default: Date.now
 		},
-	orderProducts: {
+	orderProducts: [{
 		productSlug: String,
 		productTitle: String,
 		productPrice: Number,
 		productOptions: String,
 		quantity: Number,
-	
-}
+		
+	}],
+	orderPaymentLink: String
 });
 let order = mongoose.model('order', orderSchema);
 async function getListOfOrder() {
@@ -57,34 +63,59 @@ async function getOrder(root, params) {
     return await res
 }
 async function addOrder(root, params,{
-    orderPaymentId, orderTotal, orderEmail, orderFirstname, orderLastname, orderAddr1, orderAddr2, orderCountry, orderState, orderPostcode, orderPhoneNumber, orderComment, orderStatus, orderDate ,productSlug
+    orderPaymentId, orderTotal, orderEmail, orderFirstname, orderLastname, orderAddr1, orderAddr2, orderCountry, orderState, orderPostcode, orderPhoneNumber, orderComment, orderStatus, orderDate ,productSlug, orderProducts
 }) {
     // args.password
-	console.log(params.orderProducts)
-	await authCheck(root.decoded)
-	var newOrder = new  order({
-		orderPaymentId: orderPaymentId,
-		orderTotal: orderTotal,
-		orderEmail: orderEmail,
-		orderFirstname: orderFirstname,
-		orderLastname: orderLastname,
-		orderAddr1: orderAddr1,
-		orderAddr2: orderAddr2,
-		orderCountry: orderCountry,
-		orderState: orderState,
-		orderPostcode: orderPostcode,
-		orderPhoneNumber: orderPhoneNumber,
-		orderComment: orderComment,
-		orderStatus: orderStatus,
-		orderDate: orderDate,
-		orderProducts:params.orderProducts
+	console.log(params)
+	//await authCheck(root.decoded)
+	var charge = await makeCharge(params.orderTotal)
+	var newOrder = await new  order({
+		orderPaymentId: charge.id,
+		orderTotal: params.orderTotal,
+		orderEmail: params.orderEmail,
+		orderFirstname: params.orderFirstname,
+		orderLastname: params.orderLastname,
+		orderAddr1: params.orderAddr1,
+		orderAddr2: params.orderAddr2,
+		orderCountry: params.orderCountry,
+		orderState: params.orderState,
+		orderPostcode: params.orderPostcode,
+		orderPhoneNumber: params.orderPhoneNumber,
+		orderComment: params.orderComment,
+		orderStatus: params.orderStatus,
+		orderDate: params.orderDate,
+		orderProducts:params.orderProducts,
+		orderPaymentLink:charge.authorize_uri
     });
+    
 	await console.log(newOrder)
     const res = await newOrder.save()
     if (!res) {
         throw new Error('Error55')
     }
     return await res
+}
+async function makeCharge(amount){
+	amount = amount*100;
+    console.log(amount)
+    var currency = 'thb';
+    var source = {
+        'type':     'internet_banking_bbl',
+        'amount':   amount,
+        'currency': currency,
+    };
+    return omise.sources.create(source).then(function(resSource) {
+      return omise.charges.create({
+        'amount':     amount,
+        'source':     resSource.id,
+        'currency':   currency,
+        'return_uri': 'https://omise.co'
+    });
+    }).then(function(charge) {
+      return charge
+    }).catch(function(err) {
+      return  err
+    });
 }
 async function updateOrder(root,params) {
 	await authCheck(root.decoded)

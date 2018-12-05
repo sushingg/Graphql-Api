@@ -15,11 +15,12 @@
     "graphql"
   ],
   "engines": {
-    "node": "8.11.x"
+    "node": "11.3.x"
   },
   "license": "GNU",
   "dependencies": {
     "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
@@ -29,6 +30,7 @@
     "mongoose": "^5.3.9",
     "morgan": "^1.9.1",
     "npm": "^6.4.1",
+    "omise": "^0.5.5",
     "to": "^0.2.9",
     "update": "^0.7.4"
   },

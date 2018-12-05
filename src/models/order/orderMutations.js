@@ -62,7 +62,7 @@ export default {
 				type: GraphQLDateTime
 			},
 			orderProducts: {
-				type: orderProductInput
+				type: new GraphQLList(orderProductInput)
 			}
         },
         resolve: order.addOrder
