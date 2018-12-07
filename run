@@ -1,1 +1,0 @@
-DB='mongodb://dbuser:shin1996@ec2-52-91-20-77.compute-1.amazonaws.com/project-z' SECRET='secretshin' OMISE_PUBLIC_KEY='pkey_test_5d3wpxejv7ncjefupv5' OMISE_SECRET_KEY='skey_test_5d3wpxejunvong89l7c' yarn dev
