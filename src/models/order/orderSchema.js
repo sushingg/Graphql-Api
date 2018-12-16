@@ -69,6 +69,7 @@ async function addOrder(root, params,{
 	console.log(params)
 	//await authCheck(root.decoded)
 	var charge = await makeCharge(params.orderTotal)
+	console.log(charge)
 	var newOrder = await new  order({
 		orderPaymentId: charge.id,
 		orderTotal: params.orderTotal,
