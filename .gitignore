@@ -1,5 +1,6 @@
 dist
 *.bat
+run
 # Logs
 logs
 *.log
