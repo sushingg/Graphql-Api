@@ -24,11 +24,13 @@ import bodyParser from 'body-parser'
 import userQueries from './models/user/userQueries'
 import productQueries from './models/product/productQueries'
 import orderQueries from './models/order/orderQueries'
+import categoryQueries from './models/category/categoryQueries'
 
 // Import GraphQL Mutations
 import userMutations from './models/user/userMutations'
 import productMutations from './models/product/productMutations'
 import orderMutations from './models/order/orderMutations'
+import categoryMutations from './models/category/categoryMutations'
 
 import hookApi from './hook/hook'
 
@@ -60,7 +62,9 @@ let RootQuery = new GraphQLObjectType({
 	order: orderQueries.order,
     orders: orderQueries.orders,
     orderId: orderQueries.orderId,
-	
+	category: categoryQueries.category,
+    categories: categoryQueries.categories,
+    categoryId: categoryQueries.category,
   })
 })
 
@@ -76,7 +80,8 @@ let RootMutation = new GraphQLObjectType({
     updateProduct: productMutations.updateProduct,
 	addOrder: orderMutations.addOrder,
     updateOrder: orderMutations.updateOrder,
-	
+	addCategory: categoryMutations.addCategory,
+    updateCategory: categoryMutations.updateCategory,
   })
 })
 
