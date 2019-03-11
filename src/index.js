@@ -78,9 +78,11 @@ let RootMutation = new GraphQLObjectType({
     updateUser: userMutations.updateUser,
 	addProduct: productMutations.addProduct,
     updateProduct: productMutations.updateProduct,
+    removeProductById:productMutations.removeProductById,
 	addOrder: orderMutations.addOrder,
     updateOrder: orderMutations.updateOrder,
     updateOrderBy: orderMutations.updateOrderBy,
+    removeOrderById: orderMutations.removeOrderById,
 	addCategory: categoryMutations.addCategory,
     updateCategory: categoryMutations.updateCategory,
   })

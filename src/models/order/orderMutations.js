@@ -180,5 +180,14 @@ export default {
 			}
         },
         resolve: order.updateOrderBy
-    }
+    },
+    removeOrderById: {
+        type: orderType,
+        args: {
+			id: {
+                type: new GraphQLNonNull(GraphQLID)
+            }
+        },
+        resolve: order.removeOrderById
+    },
 };

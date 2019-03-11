@@ -150,6 +150,16 @@ async function updateOrder(root,params) {
     }
     return await res
 }
+async function removeOrderById(root, {id}) {
+	var valid = mongoose.Types.ObjectId.isValid(id);
+	await console.log(valid)
+    const res = order.findByIdAndRemove(id).exec();
+	await console.log(await res)
+    if (!res) {
+        throw new Error('Error')
+    }
+    return await res
+}
 module.exports = {
-    order, getListOfOrder, getOrderById, addOrder, updateOrder, updateOrderBy, getOrder,updateCharge,
+    order, getListOfOrder, getOrderById, addOrder, updateOrder, updateOrderBy, getOrder, updateCharge, removeOrderById,
 }

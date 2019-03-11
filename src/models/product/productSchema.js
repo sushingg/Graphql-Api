@@ -77,6 +77,16 @@ async function updateProduct(root,params) {
     return await res
 
 }
+async function removeProductById(root, {id}) {
+    var valid = mongoose.Types.ObjectId.isValid(id);
+    await console.log(valid)
+    const res = product.findByIdAndRemove(id).exec();
+    await console.log(await res)
+    if (!res) {
+        throw new Error('Error')
+    }
+    return await res
+}
 module.exports = {
-    product, getListOfProducts, getProductById, addProduct, updateProduct, getProduct,
+    product, getListOfProducts, getProductById, addProduct, updateProduct, getProduct,removeProductById
 }

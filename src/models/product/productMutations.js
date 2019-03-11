@@ -91,5 +91,14 @@ export default {
             }
         },
         resolve: product.updateProduct
-    }
+    },
+    removeProductById: {
+        type: productType,
+        args: {
+            id: {
+                type: new GraphQLNonNull(GraphQLID)
+            }
+        },
+        resolve: product.removeProductById
+    },
 };
