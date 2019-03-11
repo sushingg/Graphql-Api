@@ -118,15 +118,26 @@ async function makeCharge(amount){
       return  err
     });
 }
-async function updateOrder(root,params) {
+async function updateOrderBy(root,params) {
 	await authCheck(root.decoded)
-    const res = await order.findByIdAndUpdate(params.id,{$set:params},{ new: true }).exec();
+    const res = await order.findOneAndUpdate({orderPaymentId: params.orderPaymentId},{ $set: params},{ new: true,upsert:true  }).exec();
+    console.log(params.orderPaymentId)
+    console.log(params.orderStatus)
+    console.log('sssda')
     if (!res) {
         throw new Error('Error')
     }
     return await res
+}
+async function updateOrder(root,params) {
+	await authCheck(root.decoded)
+    const res = await order.findByIdAndUpdate(params.id,{$set:params},{ new: true }).exec();
 
+    if (!res) {
+        throw new Error('Error')
+    }
+    return await res
 }
 module.exports = {
-    order, getListOfOrder, getOrderById, addOrder, updateOrder, getOrder,
+    order, getListOfOrder, getOrderById, addOrder, updateOrder, updateOrderBy, getOrder,
 }
