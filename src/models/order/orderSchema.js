@@ -138,6 +138,7 @@ async function updateCharge(params) {
     if (!res) {
         throw new Error('Error')
     }
+    console.log(res)
     return await res
 }
 async function updateOrder(root,params) {
