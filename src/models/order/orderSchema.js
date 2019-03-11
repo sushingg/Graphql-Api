@@ -110,7 +110,7 @@ async function makeCharge(amount){
         'amount':     amount,
         'source':     resSource.id,
         'currency':   currency,
-        'return_uri': 'https://omise.co'
+        'return_uri': 'https://sushingg.herokuapp.com'
     });
     }).then(function(charge) {
       return charge
