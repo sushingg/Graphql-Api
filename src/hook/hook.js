@@ -5,7 +5,7 @@ const hookApi = (data) => {
 	if(data.data.object='charge'){
 		console.log(data.data.status)
 		var params = {orderPaymentId:data.data.orderPaymentId,orderStatus:data.data.status}
-		order.updateCharge(data.data,params)
+		order.updateCharge(params)
 	}
 }
 
