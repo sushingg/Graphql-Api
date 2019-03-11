@@ -129,6 +129,17 @@ async function updateOrderBy(root,params) {
     }
     return await res
 }
+async function updateCharge(params) {
+    const res = await order.findOneAndUpdate({orderPaymentId: params.orderPaymentId},{ $set: params},{ new: true,upsert:true  }).exec();
+    console.log('updateCharg')
+    console.log(params.orderPaymentId)
+    console.log(params.orderStatus)
+    console.log('updateCharg')
+    if (!res) {
+        throw new Error('Error')
+    }
+    return await res
+}
 async function updateOrder(root,params) {
 	await authCheck(root.decoded)
     const res = await order.findByIdAndUpdate(params.id,{$set:params},{ new: true }).exec();
@@ -139,5 +150,5 @@ async function updateOrder(root,params) {
     return await res
 }
 module.exports = {
-    order, getListOfOrder, getOrderById, addOrder, updateOrder, updateOrderBy, getOrder,
+    order, getListOfOrder, getOrderById, addOrder, updateOrder, updateOrderBy, getOrder,updateCharge,
 }
