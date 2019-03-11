@@ -10,6 +10,7 @@ import {
   } from 'graphql';
 import {GraphQLDateTime} from 'graphql-iso-date';
 import productType from './productType';
+import tagsInput from '../tag/tagsInput';
 import product from './productSchema';
 export default {
     addProduct: {
@@ -37,7 +38,7 @@ export default {
             },
             productTags: {
 				name: 'Tags',
-                type: GraphQLString
+                type: new GraphQLList(tagsInput)
             },
             productOptions: {
 				name: 'Options',
@@ -78,7 +79,7 @@ export default {
             },
             productTags: {
 				name: 'productTags',
-                type: GraphQLString
+                type: new GraphQLList(tagsInput)
             },
             productOptions: {
 				name: 'productOptions',

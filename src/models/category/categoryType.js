@@ -9,7 +9,7 @@ import {
   GraphQLBoolean
  } from 'graphql'
 import {GraphQLDateTime} from 'graphql-iso-date';
-import tagsType from './tagsType';
+import tagsType from '../tag/tagsType';
 // Define our user type, with two string fields; `id` and `name`
 export default new GraphQLObjectType({
   name: 'Category',

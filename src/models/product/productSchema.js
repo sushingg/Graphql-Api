@@ -8,7 +8,9 @@ var productSchema = new mongoose.Schema({
     productPrice: Number,
     productDescription: String,
     productPublished: String,
-    productTags: String,
+    productTags:  [{
+        tag: String
+    }],
     productOptions: String,
     productAddedDate: {
         type: Date,

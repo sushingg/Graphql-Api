@@ -9,7 +9,7 @@ import {
   GraphQLBoolean
   } from 'graphql';
 import {GraphQLDateTime} from 'graphql-iso-date';
-import tagsInput from './tagsInput';
+import tagsInput from '../tag/tagsInput';
 import categoryType from './categoryType';
 import category from './categorySchema';
 export default {
