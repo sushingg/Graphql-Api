@@ -27,11 +27,14 @@ export default new GraphQLObjectType({
         productPrice: {
             type: GraphQLInt
         },
+        productQuantity: {
+            type: GraphQLInt
+        },
         productDescription: {
             type: GraphQLString
         },
         productPublished: {
-            type: GraphQLString
+            type: GraphQLBoolean
         },
         productTags: {
             type: new GraphQLList(tagsType)

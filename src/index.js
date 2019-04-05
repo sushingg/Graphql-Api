@@ -7,7 +7,7 @@ import {
 import jwt from 'jsonwebtoken';
 // Import express server
 import express from 'express'
-
+import { express as voyagerMiddleware } from 'graphql-voyager/middleware';
 // importmorgan to get logs
 import morgan from 'morgan'
 // Import cors 
@@ -217,11 +217,13 @@ apiToken.use(function(req, res, next) {
   }
 });
 app.use('/', apiToken);
-// Set up Express and integrate with our GraphQL Schema and configure to use graphiql
+app.use('/voyager', voyagerMiddleware({ endpointUrl: '/graphql' }));
 app.get('/', function(req, res) {
   return res.status(404)        // HTTP status 404: NotFound
    .send('Not found');
 });
+// Set up Express and integrate with our GraphQL Schema and configure to use graphiql
+
 apiToken.use('/graphql', cors(),graphqlHTTP(request => ({schema: schema, rootValue: request, graphiql: true,}))  )
 app.listen(process.env.PORT||4000)
 

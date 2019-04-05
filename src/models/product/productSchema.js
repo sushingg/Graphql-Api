@@ -6,8 +6,9 @@ var productSchema = new mongoose.Schema({
     productSlug: String,
     productTitle: String,
     productPrice: Number,
+    productQuantity: Number,
     productDescription: String,
-    productPublished: String,
+    productPublished: Boolean,
     productTags:  [{
         tag: String
     }],

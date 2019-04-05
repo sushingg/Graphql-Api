@@ -28,13 +28,17 @@ export default {
 				name: 'Price',
                 type: new GraphQLNonNull(GraphQLInt)
             },
+            productQuantity: {
+				name: 'Quantity',
+                type: new GraphQLNonNull(GraphQLInt)
+            },
             productDescription: {
 				name: 'Description',
                 type: GraphQLString
             },
             productPublished: {
 				name: 'Published',
-                type: GraphQLString
+                type: GraphQLBoolean
             },
             productTags: {
 				name: 'Tags',
@@ -69,13 +73,17 @@ export default {
 				name: 'productPrice',
                 type: GraphQLString
             },
+            productQuantity: {
+				name: 'Quantity',
+                type: new GraphQLNonNull(GraphQLInt)
+            },
             productDescription: {
 				name: 'productDescription',
                 type: GraphQLString
             },
             productPublished: {
 				name: 'productPublished',
-                type: GraphQLString
+                type: GraphQLBoolean
             },
             productTags: {
 				name: 'productTags',
