@@ -52,7 +52,7 @@ async function auth(root, {email, password}) {
         admin: check.admin,
         fname: check.firstName,
         lname: check.lastName,
-		exp: Math.floor(Date.now() / 1000) + (60 * 60),
+		exp: Math.floor(Date.now() / 1000) + (60*15),
     };
     const token = jwt.sign(payload, 'secretshin')
     return await {
