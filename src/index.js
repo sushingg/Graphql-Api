@@ -59,10 +59,10 @@ let RootQuery = new GraphQLObjectType({
 	product: productQueries.product,
     products: productQueries.products,
     productId: productQueries.productId,
-	order: orderQueries.order,
+	/*order: orderQueries.order,
     orders: orderQueries.orders,
-    orderId: orderQueries.orderId,
-	category: categoryQueries.category,
+    orderId: orderQueries.orderId
+	category: categoryQueries.category,*/
     categories: categoryQueries.categories,
     categoryId: categoryQueries.category,
   })
@@ -79,10 +79,10 @@ let RootMutation = new GraphQLObjectType({
 	addProduct: productMutations.addProduct,
     updateProduct: productMutations.updateProduct,
     removeProductById:productMutations.removeProductById,
-	addOrder: orderMutations.addOrder,
+	/*addOrder: orderMutations.addOrder,
     updateOrder: orderMutations.updateOrder,
     updateOrderBy: orderMutations.updateOrderBy,
-    removeOrderById: orderMutations.removeOrderById,
+    removeOrderById: orderMutations.removeOrderById,*/
 	addCategory: categoryMutations.addCategory,
     updateCategory: categoryMutations.updateCategory,
   })

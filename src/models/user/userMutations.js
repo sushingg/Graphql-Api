@@ -13,6 +13,8 @@ import userType from './userType';
 import regisType from './regisType';
 import user from './userSchema';
 import authType from './authType';
+import orderInput from './order/orderInput';
+import mailingInput from './mailing/mailingInput'
 export default {
     addUser: {
         type: regisType,
@@ -33,31 +35,16 @@ export default {
 				name: 'password',
                 type: new GraphQLNonNull(GraphQLString)
             },
-            address1: {
-				name: 'address1',
-                type: GraphQLString
-            },
-            address2: {
-				name: 'address2',
-                type: GraphQLString
-            },
-            country: {
-				name: 'country',
-                type: GraphQLString
-            },
-            state: {
-				name: 'state',
-                type: GraphQLString
-            },
-            postcode: {
-				name: 'postcode',
-                type: GraphQLString
-            },
             phone: {
 				name: 'phone',
                 type: GraphQLString
             },            
+            created: {
+                name: 'created',
+                type: GraphQLDateTime
+            },
             admin: {
+                name:'admin',
                 type: GraphQLBoolean 
             }
         },
@@ -81,37 +68,29 @@ export default {
 				name: 'email',
                 type: GraphQLString
             },
-            address1: {
-				name: 'address1',
-                type: GraphQLString
-            },
-            address2: {
-				name: 'address2',
-                type: GraphQLString
-            },
-            country: {
-				name: 'country',
-                type: GraphQLString
-            },
-            state: {
-				name: 'state',
-                type: GraphQLString
-            },
-            postcode: {
-				name: 'postcode',
-                type: GraphQLString
+            password: {
+				name: 'password',
+                type: new GraphQLNonNull(GraphQLString)
             },
             phone: {
 				name: 'phone',
                 type: GraphQLString
-            },            
-            created: {
-				name: 'created',
-                type: GraphQLDateTime
             },
             admin: {
 				name: 'admin',
                 type: GraphQLBoolean
+            },
+            order:{
+                name:'order',
+                type: new GraphQLList(orderInput)
+            },
+            addresses:{
+                name:'address',
+                type: new GraphQLList(mailingInput)
+            },
+            defaultAddress:{
+                name:'defaultAddress',
+                type: mailingInput
             }
         },
         resolve: user.updateUser

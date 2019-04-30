@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; 
 import {authCheck} from './../utils'
+import orderSchema from './order/orderSchema'
 var userSchema = new mongoose.Schema({
         firstName: String,
         lastName: String,
@@ -20,7 +21,8 @@ var userSchema = new mongoose.Schema({
 		admin: {
 			type: Boolean,
 			default: false
-		}
+        },
+        order: [orderSchema],
 });
 let user = mongoose.model('user', userSchema);
 async function hashPassword (password) {
@@ -52,7 +54,7 @@ async function auth(root, {email, password}) {
         admin: check.admin,
         fname: check.firstName,
         lname: check.lastName,
-		exp: Math.floor(Date.now() / 1000) + (60*15),
+		exp: Math.floor(Date.now() / 1000) + (60*30),
     };
     const token = jwt.sign(payload, 'secretshin')
     return await {

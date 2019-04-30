@@ -9,6 +9,8 @@ import {
   GraphQLBoolean
  } from 'graphql'
 import {GraphQLDateTime} from 'graphql-iso-date';
+import orderType from './order/orderType';
+import mailingType from './mailing/mailingType'
 // Define our user type, with two string fields; `id` and `name`
 export default new GraphQLObjectType({
   name: 'User',
@@ -26,19 +28,7 @@ export default new GraphQLObjectType({
         email: {
             type: GraphQLString
         },
-        address1: {
-            type: GraphQLString
-        },
-        address2: {
-            type: GraphQLString
-        },
-        country: {
-            type: GraphQLString
-        },
-        state: {
-            type: GraphQLString
-        },
-        postcode: {
+        password:{
             type: GraphQLString
         },
         phone: {
@@ -49,6 +39,15 @@ export default new GraphQLObjectType({
         },
         admin: {
             type: GraphQLBoolean
+        },
+        order:{
+            type: new GraphQLList(orderType)
+        },
+        addresses:{
+            type: new GraphQLList(mailingType)
+        },
+        defaultAddress:{
+            type: mailingType
         }
     })
 });

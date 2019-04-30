@@ -17,7 +17,10 @@ var productSchema = new mongoose.Schema({
         type: Date,
 		default: Date.now
     },
-    productImage: String
+    productImage: [{
+        altText: String,
+        name: String
+    }]
 });
 let product = mongoose.model('product', productSchema);
 async function getListOfProducts() {

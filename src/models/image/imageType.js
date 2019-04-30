@@ -1,6 +1,5 @@
 import {
   GraphQLObjectType,
-  GraphQLInputObjectType,
   GraphQLSchema,
   GraphQLString,
   GraphQLInt,
@@ -9,12 +8,15 @@ import {
   GraphQLID,
   GraphQLBoolean
  } from 'graphql'
-export default new GraphQLInputObjectType({
-  name: 'tagsInput',
-  description: 'tags object',
+export default new GraphQLObjectType({
+  name: 'image',
+  description: 'image object',
   fields: () => ({
-        tag: {
+        altText: {
             type: GraphQLString
+        },
+        name:{
+          type: GraphQLString
         }
     })
 });

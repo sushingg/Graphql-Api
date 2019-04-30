@@ -26,21 +26,6 @@ export default new GraphQLObjectType({
         email: {
             type: GraphQLString
         },
-        address1: {
-            type: GraphQLString
-        },
-        address2: {
-            type: GraphQLString
-        },
-        country: {
-            type: GraphQLString
-        },
-        state: {
-            type: GraphQLString
-        },
-        postcode: {
-            type: GraphQLString
-        },
         phone: {
             type: GraphQLString
         },        
