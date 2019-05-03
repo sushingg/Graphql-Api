@@ -8,6 +8,7 @@ var productSchema = new mongoose.Schema({
     productPrice: Number,
     productQuantity: Number,
     productDescription: String,
+    productDescriptionHtml: String,
     productPublished: Boolean,
     productTags:  [{
         tag: String
@@ -50,7 +51,7 @@ async function getProduct(root, params) {
     return await res
 }
 async function addProduct(root, {
-    productSlug, productTitle, productPrice, productDescription, productPublished, productTags, productOptions, productAddedDate, productImage
+    productSlug, productTitle, productPrice, productDescription,productDescriptionHtml, productPublished, productTags, productOptions, productAddedDate, productImage
 }) {
     // args.password
 	await authCheck(root.decoded)
@@ -58,7 +59,8 @@ async function addProduct(root, {
 		productSlug: productSlug,
 		productTitle: productTitle,
 		productPrice: productPrice,
-		productDescription: productDescription,
+        productDescription: productDescription,
+        productDescriptionHtml:productDescriptionHtml,
 		productPublished: productPublished,
 		productTags: productTags,
 		productOptions: productOptions,

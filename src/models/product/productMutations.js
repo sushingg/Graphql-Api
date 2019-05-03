@@ -11,6 +11,7 @@ import {
 import {GraphQLDateTime} from 'graphql-iso-date';
 import productType from './productType';
 import tagsInput from '../tag/tagsInput';
+import imageInput from '../image/imageInput'
 import product from './productSchema';
 export default {
     addProduct: {
@@ -36,6 +37,10 @@ export default {
 				name: 'Description',
                 type: GraphQLString
             },
+            productDescriptionHtml: {
+				name: 'productDescriptionHtml',
+                type: GraphQLString
+            },
             productPublished: {
 				name: 'Published',
                 type: GraphQLBoolean
@@ -50,7 +55,7 @@ export default {
             },
             productImage: {
 				name: 'Image',
-                type: GraphQLString
+                type: new GraphQLList(imageInput)
             }
         },
         resolve: product.addProduct
@@ -81,6 +86,10 @@ export default {
 				name: 'productDescription',
                 type: GraphQLString
             },
+            productDescriptionHtml: {
+				name: 'productDescriptionHtml',
+                type: GraphQLString
+            },
             productPublished: {
 				name: 'productPublished',
                 type: GraphQLBoolean
@@ -95,7 +104,7 @@ export default {
             },
             productImage: {
 				name: 'productImage',
-                type: GraphQLString
+                type: new GraphQLList(imageInput)
             }
         },
         resolve: product.updateProduct

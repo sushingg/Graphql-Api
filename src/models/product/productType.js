@@ -34,6 +34,9 @@ export default new GraphQLObjectType({
         productDescription: {
             type: GraphQLString
         },
+        productDescriptionHtml: {
+            type: GraphQLString
+        },
         productPublished: {
             type: GraphQLBoolean
         },
