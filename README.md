@@ -1,7 +1,8 @@
-# GraphQL + Express + MongoDB
+# GraphQL + Express + MongoDB 
 [![GitHub license](https://img.shields.io/github/license/sushingg/Graphql-Api.svg)](https://github.com/sushingg/Graphql-Api/blob/master/LICENSE)
 
 > A small project using GraphQL with MongoDB in Express
+> use for serve data for e-commerce website
 
 ## Installation
 
@@ -11,13 +12,6 @@ This project makes use of ES6 which requires a 8+ version of Node https://nodejs
 #### MongoDB
 In order to run this project you need to install MongoDB and ensure an instance is running.
 https://www.npmjs.com/package/mongodb
-
-```js
-npm install mongodb --save
-mongod
-```
-
-To see the data you are saving you can use a MongoDB Manager App such as https://robomongo.org/
 
 #### NPM Modules
 The following NPM modules are required in package.json:
@@ -37,7 +31,7 @@ The following NPM modules are required in package.json:
 Install with:
 
 ```js
-npm install
+yarn install
 ```
 
 #### Run the project
@@ -45,14 +39,19 @@ npm install
 ##### Running in Development
 npm dev is configured with nodmon so that the server automatically restarts when code files are changes
 ```js
-npm run dev
+set DB=<your monogodb uri>
+set SECRET=<secret for make auth>
+set OMISE_PUBLIC_KEY=<omise_public_key>
+set OMISE_SECRET_KEY=<omise_secret_key>
+yarn dev
+
 ```
 
 ##### Running in Production
 ```js
-npm start
+yarn start
 ```
-npm prestart will run first, transpile the ES6 code and save to _dist_ folder. npm start will then run the code directly from the _dist_ folder
+
 
 ## Running GraphQL Mutations & Queries
 You can run these queries / mutations within GraphiQL, alternatively you can run them within a tool such as Postman. To do so ensure you POST the query / mutation in the body and set the content-type to GraphQL.
