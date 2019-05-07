@@ -27,6 +27,9 @@ The following NPM modules are required in package.json:
 * graphql-iso-date
 * cors
 * bcrypt
+* omise
+* body-parser
+
 
 Install with:
 
@@ -40,7 +43,7 @@ yarn install
 npm dev is configured with nodmon so that the server automatically restarts when code files are changes
 ```js
 set DB=<your monogodb uri>
-set SECRET=<secret for make auth>
+set SECRET=<secret_for_make_auth>
 set OMISE_PUBLIC_KEY=<omise_public_key>
 set OMISE_SECRET_KEY=<omise_secret_key>
 yarn dev
