@@ -17,7 +17,7 @@ export default new GraphQLInputObjectType({
   description: 'order object',
   fields: () => ({
 		id: {
-			type: new GraphQLNonNull(GraphQLID)
+			type: GraphQLID
 		},
 		orderPaymentId: {
 			type: GraphQLString

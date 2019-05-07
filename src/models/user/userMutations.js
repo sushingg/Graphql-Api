@@ -14,6 +14,8 @@ import regisType from './regisType';
 import user from './userSchema';
 import authType from './authType';
 import orderInput from './order/orderInput';
+import orderUpdateType from './order/orderUpdateType'
+import orderProductInput from './order/orderProductInput'
 import mailingInput from './mailing/mailingInput'
 export default {
     addUser: {
@@ -94,6 +96,79 @@ export default {
             }
         },
         resolve: user.updateUser
+    },
+    updateUserOrder: {
+        type: orderUpdateType,
+        args: {
+			id: {
+                type: new GraphQLNonNull(GraphQLID)
+            },
+            orderPaymentId: {
+                type: GraphQLString
+            },
+            orderTotal: {
+                type: GraphQLInt
+            },
+            orderEmail: {
+                type: GraphQLString
+            },
+            orderFirstname: {
+                type: GraphQLString
+            },
+            orderLastname: {
+                type: GraphQLString
+            },
+            orderAddr1: {
+                type: GraphQLString
+            },
+            orderAddr2: {
+                type: GraphQLString
+            },
+            orderCountry: {
+                type: GraphQLString
+            },
+            orderState: {
+                type: GraphQLString
+            },
+            orderPostcode: {
+                type: GraphQLString
+            },
+            orderPhoneNumber: {
+                type: GraphQLString
+            },
+            orderComment: {
+                type: GraphQLString
+            },
+            orderStatus: {
+                type: GraphQLString
+            },
+            orderDate: {
+                type: GraphQLDateTime
+            },
+            orderProducts: {
+                type: new GraphQLList(orderProductInput)
+            },
+            orderPaymentLink: {
+                type: GraphQLString
+            },
+            shippingAddress:{
+                    type: mailingInput
+            }
+        },
+        resolve: user.updateUserOrder
+    },
+    addUserOrder: {
+        type: userType,
+        args: {
+			id: {
+                type: new GraphQLNonNull(GraphQLID)
+            },
+            order:{
+                name:'order',
+                type: new GraphQLList(orderInput)
+            }
+        },
+        resolve: user.addUserOrder
     },
     login: {
         type: authType,

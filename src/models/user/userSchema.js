@@ -54,7 +54,7 @@ async function auth(root, {email, password}) {
         admin: check.admin,
         fname: check.firstName,
         lname: check.lastName,
-		exp: Math.floor(Date.now() / 1000) + (60*30),
+		exp: Math.floor(Date.now() / 1000) + (60*60),
     };
     const token = jwt.sign(payload, 'secretshin')
     return await {
@@ -127,6 +127,38 @@ async function updateUser(root,params) {
     return await res
 
 }
+async function updateUserOrder(root,params) {
+    await authCheck(root.decoded)
+    console.log(params)
+    var res = await user.update({'order._id': params.id},{$set:{
+        'order.$.orderPaymentId':params.orderPaymentId,
+        'order.$.orderTotal':params.orderTotal,
+        'order.$.orderEmail':params.orderEmail,
+        'order.$.orderFirstname':params.orderFirstname,
+        'order.$.orderLastname':params.orderLastname
+        
+    }}).exec();
+    
+    if (!res) {
+        throw new Error('Error')
+    }else{
+        res = {'success':true}
+    }
+    console.log(res)
+    return await res
+
+}
+async function addUserOrder(root,params) {
+	await authCheck(root.decoded)
+    const res = await user.findByIdAndUpdate(params.id,{$push:{order:params.order}},{ new: true }).exec();
+    console.log(params)
+    console.log('adduserorder')
+    if (!res) {
+        throw new Error('Error')
+    }
+    return await res
+
+}
 module.exports = {
-    user, auth, getListOfUsers,getUserById,addUser,updateUser,getUser,
+    user, auth, getListOfUsers,getUserById,addUser,updateUser,getUser,addUserOrder,updateUserOrder
 }
