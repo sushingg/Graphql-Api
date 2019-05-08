@@ -15,6 +15,7 @@ import user from './userSchema';
 import authType from './authType';
 import orderInput from './order/orderInput';
 import orderUpdateType from './order/orderUpdateType'
+import addUserOrderType from './order/addUserOrderType'
 import orderProductInput from './order/orderProductInput'
 import mailingInput from './mailing/mailingInput'
 export default {
@@ -158,7 +159,7 @@ export default {
         resolve: user.updateUserOrder
     },
     addUserOrder: {
-        type: userType,
+        type: addUserOrderType,
         args: {
 			id: {
                 type: new GraphQLNonNull(GraphQLID)

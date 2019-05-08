@@ -180,11 +180,13 @@ async function addUserOrder(root,params) {
     var charge = await makeCharge(params.order[0].orderTotal)
     params.order[0].orderPaymentId = charge.id
     
-    const res = await user.findByIdAndUpdate(params.id,{$push:{order:params.order}},{ new: true }).exec();
+    var res = await user.findByIdAndUpdate(params.id,{$push:{order:params.order}},{ new: true }).exec();
     console.log(params)
     console.log('adduserorder')
     if (!res) {
         throw new Error('Error')
+    }else{
+        res = {'success':true}
     }
     return await res
 
