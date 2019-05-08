@@ -187,7 +187,7 @@ async function addUserOrder(root,params) {
     if (!res) {
         throw new Error('Error')
     }else{
-        res = {'success':true}
+        res = {'orderPaymentLink':charge.authorize_uri}
     }
     return await res
 
