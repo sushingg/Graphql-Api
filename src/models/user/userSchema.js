@@ -179,6 +179,7 @@ async function addUserOrder(root,params) {
     //await userCheck(root.decoded)
     var charge = await makeCharge(params.order[0].orderTotal)
     params.order[0].orderPaymentId = charge.id
+    params.order[0].orderPaymentLink = charge.authorize_uri
     
     var res = await user.findByIdAndUpdate(params.id,{$push:{order:params.order}},{ new: true }).exec();
     console.log(params)
