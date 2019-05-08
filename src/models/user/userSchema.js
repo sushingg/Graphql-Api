@@ -153,6 +153,24 @@ async function updateUserOrder(root,params) {
     return await res
 
 }
+async function updateCharge(root,params) {
+    await authCheck(root.decoded)
+    console.log(params)
+    var res = await user.update({'order.orderPaymentId': params.orderPaymentId},{$set:{
+        'order.$.orderPaymentId':params.orderPaymentId,
+        'order.$.orderStatus':params.status
+
+    }}).exec();
+    
+    if (!res) {
+        throw new Error('Error')
+    }else{
+        res = {'success':true}
+    }
+    console.log(res)
+    return await res
+
+}
 async function makeCharge(amount){
 	amount = amount*100;
     console.log(amount)
@@ -177,9 +195,9 @@ async function makeCharge(amount){
 }
 async function addUserOrder(root,params) {
     //await userCheck(root.decoded)
-    var charge = await makeCharge(params.order[0].orderTotal)
-    params.order[0].orderPaymentId = charge.id
-    params.order[0].orderPaymentLink = charge.authorize_uri
+    var charge = await makeCharge(params.order.orderTotal)
+    params.order.orderPaymentId = charge.id
+    params.order.orderPaymentLink = charge.authorize_uri
     
     var res = await user.findByIdAndUpdate(params.id,{$push:{order:params.order}},{ new: true }).exec();
     console.log(params)
@@ -193,5 +211,5 @@ async function addUserOrder(root,params) {
 
 }
 module.exports = {
-    user, auth, getListOfUsers,getUserById,addUser,updateUser,getUser,addUserOrder,updateUserOrder
+    user, auth, getListOfUsers,getUserById,addUser,updateUser,getUser,addUserOrder,updateUserOrder,updateCharge
 }

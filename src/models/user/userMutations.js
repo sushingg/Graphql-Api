@@ -166,7 +166,7 @@ export default {
             },
             order:{
                 name:'order',
-                type: new GraphQLList(orderInput)
+                type: orderInput
             }
         },
         resolve: user.addUserOrder
