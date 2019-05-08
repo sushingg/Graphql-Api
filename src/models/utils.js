@@ -7,4 +7,10 @@ async function authCheck (decoded) {
 	}
   return await true
 }
-module.exports = {authCheck}
+async function userCheck (decoded) {
+	if (decoded.error){
+		throw new Error(decoded.message)
+	}
+  return await true
+}
+module.exports = {userCheck,userCheck}

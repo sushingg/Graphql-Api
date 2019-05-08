@@ -3,6 +3,11 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; 
 import {authCheck} from './../utils'
 import orderSchema from './order/orderSchema'
+var omise = require('omise')({
+    'publicKey': process.env.OMISE_PUBLIC_KEY,
+    'secretKey': process.env.OMISE_SECRET_KEY,
+    'omiseVersion': '2017-11-02'
+  });
 var userSchema = new mongoose.Schema({
         firstName: String,
         lastName: String,
@@ -148,8 +153,33 @@ async function updateUserOrder(root,params) {
     return await res
 
 }
+async function makeCharge(amount){
+	amount = amount*100;
+    console.log(amount)
+    var currency = 'thb';
+    var source = {
+        'type':     'internet_banking_bbl',
+        'amount':   amount,
+        'currency': currency,
+    };
+    return omise.sources.create(source).then(function(resSource) {
+      return omise.charges.create({
+        'amount':     amount,
+        'source':     resSource.id,
+        'currency':   currency,
+        'return_uri': 'https://sushingg.herokuapp.com'
+    });
+    }).then(function(charge) {
+      return charge
+    }).catch(function(err) {
+      return  err
+    });
+}
 async function addUserOrder(root,params) {
-	await authCheck(root.decoded)
+    //await userCheck(root.decoded)
+    var charge = await makeCharge(params.order[0].orderTotal)
+    params.order[0].orderPaymentId = charge.id
+    
     const res = await user.findByIdAndUpdate(params.id,{$push:{order:params.order}},{ new: true }).exec();
     console.log(params)
     console.log('adduserorder')

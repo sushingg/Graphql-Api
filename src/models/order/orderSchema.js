@@ -148,7 +148,7 @@ async function updateOrder(root,params) {
     if (!res) {
         throw new Error('Error')
     }
-    return await res
+    return await res  
 }
 async function removeOrderById(root, {id}) {
 	var valid = mongoose.Types.ObjectId.isValid(id);
