@@ -154,7 +154,6 @@ async function updateUserOrder(root,params) {
 
 }
 async function updateCharge(root,params) {
-    await authCheck(root.decoded)
     console.log(params)
     var res = await user.update({'order.orderPaymentId': params.orderPaymentId},{$set:{
         'order.$.orderStatus':params.status
