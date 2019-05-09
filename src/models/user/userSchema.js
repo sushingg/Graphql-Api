@@ -157,7 +157,6 @@ async function updateCharge(root,params) {
     await authCheck(root.decoded)
     console.log(params)
     var res = await user.update({'order.orderPaymentId': params.orderPaymentId},{$set:{
-        'order.$.orderPaymentId':params.orderPaymentId,
         'order.$.orderStatus':params.status
 
     }}).exec();
