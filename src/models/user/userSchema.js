@@ -156,7 +156,7 @@ async function updateUserOrder(root,params) {
 async function updateCharge(params) {
     console.log(params)
     var res = await user.update({'order.orderPaymentId': params.orderPaymentId},{$set:{
-        'order.$.orderStatus':params.status
+        'order.$.orderStatus':params.orderStatus
 
     }}).exec();
     
